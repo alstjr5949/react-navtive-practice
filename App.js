@@ -12,9 +12,19 @@ import * as Location from "expo-location";
 
 const API_KEY = "ee5f10276798b0ea2df4f838cea4860d";
 
+const icons = {
+  Clear: "day-sunny",
+  Clouds: "cloudy",
+  Rain: "rain",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Drizzle: "day-rain",
+  Thunderstorm: "lightning",
+};
+
 export default function App() {
   const [city, setCity] = useState("Loading...");
-  const [days, setDays] = useState([]);
+  const [daysArr, setDaysArr] = useState([]);
   const [ok, setOk] = useState(true);
   const getWeather = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -35,11 +45,13 @@ export default function App() {
       `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`
     );
     const json = await res.json();
-    setDays(json.daily);
+    setDaysArr(json.daily);
   };
+
   useEffect(() => {
     getWeather();
-  });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.city}>
@@ -51,16 +63,30 @@ export default function App() {
         pagingEnabled
         contentContainerStyle={styles.weather}
       >
-        {days.length === 0 ? (
+        {daysArr.length === 0 ? (
           <View style={styles.day}>
             <ActivityIndicator size="large" />
           </View>
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
-              </Text>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={68}
+                  color="white"
+                />
+              </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
