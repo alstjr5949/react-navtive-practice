@@ -3,25 +3,24 @@ import React from "react";
 import {
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
   TouchableHighlight,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  Pressable,
+  View,
 } from "react-native";
+import { theme } from "./colors";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
       <View style={styles.header}>
         <TouchableOpacity>
           <Text style={styles.btnText}>Work</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableWithoutFeedback>
           <Text style={styles.btnText}>Travel</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
@@ -30,9 +29,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: theme.bg,
+    paddingHorizontal: 30,
   },
   header: {
     justifyContent: "space-between",
