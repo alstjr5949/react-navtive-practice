@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -24,9 +25,7 @@ export default function App() {
     if (text === "") {
       return;
     }
-    const newToDos = Object.assign({}, toDos, {
-      [Date.now()]: { text, work: working },
-    });
+    const newToDos = { ...toDos, [Date.now()]: { text, work: working } };
     setToDos(newToDos);
     setText("");
   };
@@ -63,6 +62,13 @@ export default function App() {
           style={styles.input}
         />
       </View>
+      <ScrollView>
+        {Object.keys(toDos).map((key) => (
+          <View style={styles.toDo} key={key}>
+            <Text style={styles.toDoText}>{toDos[key].text}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -89,5 +95,17 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 20,
     fontSize: 18,
+  },
+  toDo: {
+    backgroundColor: theme.toDoBg,
+    marginTop: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+  },
+  toDoText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
